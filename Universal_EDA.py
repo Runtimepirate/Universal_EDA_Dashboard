@@ -4,7 +4,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# ========== Utility Functions ==========
 
 def generate_summary(df):
     summary = {}
@@ -14,10 +13,8 @@ def generate_summary(df):
     summary['Missing Values'] = df.isnull().sum().to_dict()
     summary['Missing Percentage'] = (df.isnull().mean() * 100).round(2).to_dict()
     summary['Duplicates'] = df.duplicated().sum()
-    # Numeric summary
     numeric_summary = df.select_dtypes(include=np.number).describe().T
     summary['Numeric Summary'] = numeric_summary
-    # Categorical summary
     cat_summary = {}
     for col in df.select_dtypes(include=['object', 'category']).columns:
         cat_summary[col] = {
@@ -72,66 +69,90 @@ def plot_bivariate(df):
     else:
         st.info("Not enough numeric columns for scatter plots.")
 
-# ========== Streamlit App ==========
 
-def main():
-    st.title('Universal EDA Dashboard')
-    st.write('Upload any CSV or Excel file to get automated exploratory data analysis.')
 
-    uploaded_file = st.file_uploader('Upload your dataset (CSV or Excel)', type=['csv', 'xlsx'])
+with st.sidebar:
+    st.image("https://raw.githubusercontent.com/Runtimepirate/About_me/main/Profile_pic.jpg", width=200)
 
-    if uploaded_file is not None:
-        try:
-            if uploaded_file.name.endswith('.csv'):
-                df = pd.read_csv(uploaded_file)
-            else:
-                df = pd.read_excel(uploaded_file)
+    st.markdown("## **Mr. Aditya Katariya [[Resume](https://drive.google.com/file/d/1Vq9-H1dl5Kky2ugXPIbnPvJ72EEkTROY/view?usp=drive_link)]**")
+    st.markdown(" *College - Noida Institute of Engineering and Technology, U.P*")
 
-            st.success('Dataset loaded successfully!')
+    st.markdown("----")
 
-            # Data Overview
-            st.subheader('Data Overview')
-            st.write(f'Shape: {df.shape[0]} rows, {df.shape[1]} columns')
-            st.write('Columns and Data Types:')
-            dtypes_df = pd.DataFrame({'Column': df.columns, 'Data Type': df.dtypes.astype(str)})
-            st.dataframe(dtypes_df)
+    st.markdown("## Contact Details:-")
+    st.markdown("📫 *[Prasaritation@gmail.com](mailto:Prasaritation@gmail.com)*")
+    st.markdown("💼 *[LinkedIn](https://www.linkedin.com/in/adityakatariya/)*")
+    st.markdown("💻 *[GitHub](https://github.com/Runtimepirate)*")
 
-            # Data Preview
-            st.subheader('Data Preview')
-            st.dataframe(df.head())
+    st.markdown("----")
 
-            # Generate and show summary
-            summary = generate_summary(df)
+    st.markdown("**AI & ML Enthusiast**")
+    st.markdown(
+        """
+        Passionate about solving real-world problems using data science and customer analytics. Always learning and building smart, scalable AI solutions.
+        """
+    )
 
-            st.subheader('Missing Values')
-            missing_df = pd.DataFrame({
-                'Missing Count': df.isnull().sum(),
-                'Missing %': (df.isnull().mean()*100).round(2)
-            })
-            st.dataframe(missing_df)
-            plot_missing_heatmap(df)
+st.title('Universal EDA Dashboard')
+st.markdown("""
+### Overview
 
-            st.subheader('Duplicates')
-            st.write(f'Number of duplicate rows: {summary["Duplicates"]}')
+**Universal EDA Dashboard** — A tool that provides comprehensive exploratory data analysis on any uploaded CSV or Excel file to :-
 
-            st.subheader('Summary Statistics')
-            st.write('Numeric Columns:')
-            st.dataframe(summary['Numeric Summary'])
+- Instantly view dataset shape, columns, data types, and missing values  
+- Visualize numeric and categorical features  
+- Generate correlation heatmaps and univariate/bivariate plots  
+- Designed for **data scientists**, **students**, and **analysts** to speed up initial data understanding  
+""")
 
-            st.write('Categorical Columns:')
-            for col, stats in summary['Categorical Summary'].items():
-                st.write(f'**{col}**')
-                st.write(f'Unique Values: {stats["Unique Values"]}')
-                st.write('Top Values:')
-                st.write(stats['Top Values'])
+uploaded_file = st.file_uploader('Upload your dataset (CSV or Excel)', type=['csv', 'xlsx'])
 
-            # Visualizations
-            plot_univariate(df)
-            plot_correlation_heatmap(df)
-            plot_bivariate(df)
 
-        except Exception as e:
-            st.error(f'Error loading or processing file: {e}')
+if uploaded_file is not None:
+    try:
+        if uploaded_file.name.endswith('.csv'):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
 
-if __name__ == '__main__':
-    main()
+        st.success('Dataset loaded successfully!')
+
+        st.subheader('Data Overview')
+        st.write(f'Shape: {df.shape[0]} rows, {df.shape[1]} columns')
+        st.write('Columns and Data Types:')
+        dtypes_df = pd.DataFrame({'Column': df.columns, 'Data Type': df.dtypes.astype(str)})
+        st.dataframe(dtypes_df)
+
+        st.subheader('Data Preview')
+        st.dataframe(df.head())
+
+        summary = generate_summary(df)
+
+        st.subheader('Missing Values')
+        missing_df = pd.DataFrame({
+            'Missing Count': df.isnull().sum(),
+            'Missing %': (df.isnull().mean()*100).round(2)
+        })
+        st.dataframe(missing_df)
+        plot_missing_heatmap(df)
+
+        st.subheader('Duplicates')
+        st.write(f'Number of duplicate rows: {summary["Duplicates"]}')
+
+        st.subheader('Summary Statistics')
+        st.write('Numeric Columns:')
+        st.dataframe(summary['Numeric Summary'])
+
+        st.write('Categorical Columns:')
+        for col, stats in summary['Categorical Summary'].items():
+            st.write(f'**{col}**')
+            st.write(f'Unique Values: {stats["Unique Values"]}')
+            st.write('Top Values:')
+            st.write(stats['Top Values'])
+
+        plot_univariate(df)
+        plot_correlation_heatmap(df)
+        plot_bivariate(df)
+
+    except Exception as e:
+        st.error(f'Error loading or processing file: {e}')
