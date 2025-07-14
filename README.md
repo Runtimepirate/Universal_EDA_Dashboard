@@ -3,6 +3,21 @@
 **Universal EDA Dashboard** is a user-friendly, interactive **Streamlit** app that enables anyone to upload a CSV or Excel dataset and instantly receive automated exploratory data analysis (EDA), summary statistics, and insightful visualizations — no coding required!
 
 ---
+## Hosted on
+- Deployed on :- [Streamlit Cloud](https://adityakatariya.streamlit.app/) 
+- Built with Openpyxl | Streamlit | Pandas | Seaborn | Matplotlib | Numpy  
+
+---
+
+##  Developed by
+**Mr. Aditya Katariya**  
+ *Noida Institute of Engineering and Technology, U.P*  
+-  [LinkedIn](https://www.linkedin.com/in/adityakatariya/)  
+-  [GitHub](https://github.com/Runtimepirate)  
+-  [Prasaritation@gmail.com](mailto:Prasaritation@gmail.com)  
+-  [Resume (Google Drive)](https://drive.google.com/file/d/1Vq9-H1dl5Kky2ugXPIbnPvJ72EEkTROY/view?usp=drive_link)
+
+---
 
 ## 🚀 Features
 
